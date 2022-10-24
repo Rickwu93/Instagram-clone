@@ -1,17 +1,34 @@
+import { useState } from 'react'
 import profileIcon from '../assets/profileIcon.svg'
 
 const Bio = () => {
+    const [userDetails, setUserDetails] = useState({
+        name: 'Ricky W',
+        about: 'Everyday programmer 1337'
+    })
+    const [editFormIsOpen, setEditFormIsOpen] = useState(false)
+
+    const updateUserDetails = (event) => {
+        event.preventDefault()
+        setUserDetails({
+            name: event.target.nameOfUser.value,
+            about: event.target.aboutUser.value,
+        })
+    }
+
     const editForm = (
-        <form className='edit-bio-form'>
-            <input type="text" id='' placeholder='Your name' />
-            <input type="text" id='' placeholder='About you' />
+        <form className='edit-bio-form' onSubmit={(e) => updateUserDetails(e)}>
+            <input type="text" id='' name="nameOfUser" placeholder='Your name' />
+            <input type="text" id='' name="aboutUser" placeholder='About you' />
             <br />
-            <button type='button' className='cancel-button'>
+            <button type='button' className='cancel-button' onClick={() => setEditFormIsOpen(false)}>
                 Cancel
                 </button>
-            <button type='button'>Save</button>
+            <button type='submit'>Save</button>
         </form>
     )
+
+    const editButton =  <button onClick={() => setEditFormIsOpen(true)}>Edit</button>
 
     return (
         <section className='bio'>
@@ -19,10 +36,10 @@ const Bio = () => {
                 <img src={profileIcon} alt="profile" />
             </div>
             <div className="profile-info">
-                <p className="name">Ricky W</p>
-                <p className="about">Everyday programmer 1337</p>
-                <button>Edit</button>
-                {editForm}
+                <p className="name">{userDetails.name}</p>
+                <p className="about">{userDetails.about}</p>
+               
+                {editFormIsOpen ? editForm : editButton}
             </div>
         </section>
     )
