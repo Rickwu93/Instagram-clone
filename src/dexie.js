@@ -1,7 +1,7 @@
 import Dexie from "dexie";
 
-const db = new Dexie('myInsta')
+export const db = new Dexie('myInsta')
 db.version(1).stores({
-    bio: 'name,about',
-    gallery: 'id,url'
+    bio: ',name,about',
+    gallery: '++id,url'
 })

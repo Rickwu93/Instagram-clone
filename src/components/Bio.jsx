@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import getPhotoUrl from 'get-photo-url'
 import profileIcon from '../assets/profileIcon.svg'
+import { db } from '../dexie'
 
 const Bio = () => {
     const [userDetails, setUserDetails] = useState({
@@ -10,12 +11,22 @@ const Bio = () => {
     const [editFormIsOpen, setEditFormIsOpen] = useState(false)
     const [profilePhoto, setProfilePhoto] = useState(profileIcon)
 
-    const updateUserDetails = (event) => {
+    useEffect(() => {
+        const setDataFromDb = async () => {
+            const userDetailsFromDb = await db.bio.get('info')
+            setUserDetails(userDetailsFromDb) && setUserDetails(userDetailsFromDb)
+        }
+        setDataFromDb()
+    })
+
+    const updateUserDetails = async (event) => {
         event.preventDefault()
-        setUserDetails({
+        const objectData = {
             name: event.target.nameOfUser.value,
             about: event.target.aboutUser.value,
-        })
+        }
+        setUserDetails(objectData)
+        await db.bio.put(objectData, 'info')
         setEditFormIsOpen(false)
     }
 
