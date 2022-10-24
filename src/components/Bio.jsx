@@ -19,7 +19,7 @@ const Bio = () => {
             profilePhotoFromDb && setProfilePhoto(profilePhotoFromDb)
         }
         setDataFromDb()
-    })
+    }, [])
 
     const updateUserDetails = async (event) => {
         event.preventDefault()
