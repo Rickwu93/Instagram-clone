@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import getPhotoUrl from 'get-photo-url'
 import profileIcon from '../assets/profileIcon.svg'
 
 const Bio = () => {
@@ -7,6 +8,7 @@ const Bio = () => {
         about: 'Everyday programmer 1337'
     })
     const [editFormIsOpen, setEditFormIsOpen] = useState(false)
+    const [profilePhoto, setProfilePhoto] = useState(profileIcon)
 
     const updateUserDetails = (event) => {
         event.preventDefault()
@@ -14,6 +16,12 @@ const Bio = () => {
             name: event.target.nameOfUser.value,
             about: event.target.aboutUser.value,
         })
+        setEditFormIsOpen(false)
+    }
+
+    const updateProfilePhoto = async () => {
+        const newProfilePhoto = await getPhotoUrl('#profilePhotoInput')
+        setProfilePhoto(newProfilePhoto)
     }
 
     const editForm = (
@@ -30,11 +38,16 @@ const Bio = () => {
 
     const editButton =  <button onClick={() => setEditFormIsOpen(true)}>Edit</button>
 
+
     return (
         <section className='bio'>
+            <input type="file" accept='image/*' name="photo" id="profilePhotoInput" />
+            <label htmlFor="profilePhotoInput" onClick={updateProfilePhoto}>
             <div className="profile-photo" role="button" title="Click to edit photo">
-                <img src={profileIcon} alt="profile" />
+                <img src={profilePhoto} alt="profile" />
             </div>
+            </label>
+           
             <div className="profile-info">
                 <p className="name">{userDetails.name}</p>
                 <p className="about">{userDetails.about}</p>

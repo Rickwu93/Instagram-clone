@@ -1,38 +1,32 @@
-import image1 from '../assets/image1.jpeg'
-import image2 from '../assets/image2.jpeg'
-import image3 from '../assets/image3.jpeg'
-import image4 from '../assets/image4.jpeg'
-import image5 from '../assets/image5.jpeg'
+import getPhotoUrl from "get-photo-url";
+import { useState } from "react";
 
 const Gallery = () => {
+    const [allPhotos, setAllPhotos] = useState([])
+
+    const addPhoto = async () => {
+        const newPhoto = {
+            id: Date.now(),
+            url: await getPhotoUrl('#addPhotoInput'),
+        }
+
+        setAllPhotos([newPhoto, ...allPhotos])
+    }
+
   return (
     <>
       <input type="file" name="photo" id="addPhotoInput" />
-      <label htmlFor="addPhotoInput">
+      <label htmlFor="addPhotoInput" onClick={addPhoto}>
         <i className="add-photo-button fas fa-plus-square"></i>
       </label>
 
       <section className='gallery'>
-        <div className="item">
-            <img src={image1} className='item-image' alt="" />
+        {allPhotos.map((photo) => (
+        <div className="item" key={photo.id}>
+            <img src={photo.url} className='item-image' alt="" />
             <button className="delete-button">Delete</button>
         </div>
-        <div className="item">
-            <img src={image2} className='item-image' alt="" />
-            <button className="delete-button">Delete</button>
-        </div>
-        <div className="item">
-            <img src={image3} className='item-image' alt="" />
-            <button className="delete-button">Delete</button>
-        </div>
-        <div className="item">
-            <img src={image4} className='item-image' alt="" />
-            <button className="delete-button">Delete</button>
-        </div>
-        <div className="item">
-            <img src={image5} className='item-image' alt="" />
-            <button className="delete-button">Delete</button>
-        </div>
+        ))}
       </section>
     </>
   );
